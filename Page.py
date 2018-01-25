@@ -1,6 +1,6 @@
 class Page:
 	def __init__(self, totalAvailableResults, numResults, nextPageToken, prevPageToken):
-		self.m_totalAvailableResults = totalAvailableResults,
+		self.m_totalAvailableResults = totalAvailableResults
 		self.m_numResults = numResults
 		self.m_nextPageToken = nextPageToken
 		self.m_prevPageToken = prevPageToken
