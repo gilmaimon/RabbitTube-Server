@@ -1,0 +1,14 @@
+class Song;
+
+class LocalStorage:
+	Bool IsSongCached(Song);
+	Uri GetCachedSong(Song);
+;
+
+class SongsDownload(LocalStorage):
+	Bool DownloadSong(Song);
+;
+
+class SongsSearch:
+	Song SearchSong(Query);
+;
