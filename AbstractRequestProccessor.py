@@ -13,7 +13,7 @@ class AbstractRequestProccessor(ABC):
 	
 	def TryExtractIdFromDownloadRequestParams(self, params):
 		if self.m_validator.AreDownloadRequestParamsValid(params) == False:
-			return False, None
+			return True, None
 		return self.ExtractIdFromDownloadRequestParams(params)
 
 

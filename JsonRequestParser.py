@@ -1,10 +1,10 @@
 from AbstractRequestParser import *
 
 class JsonRequestParser(AbstractRequestParser):
-	def __init__(self, request):
-		super().__init__(request)
+	def __init__(self):
+		super().__init__()
 
-	def GetRequestParams(self, request):
+	async def GetRequestParams(self, request):
 		params = {}
 		error = False
 		try:

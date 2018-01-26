@@ -9,5 +9,5 @@ class AbstractRequestParser(ABC):
 		#self.m_error = error
 		
 	@abstractmethod
-	def GetRequestParams(self, request):
+	async def GetRequestParams(self, request):
 		pass

@@ -4,6 +4,7 @@ from LocalStorage import *
 from YoutubeSongSearch import *
 from YoutubeRequestValidator import *
 from YoutubeRequestProccessor import *
+from JsonRequestParser import *
 import re
 
 def IsValidYoutubeQuery(query):
@@ -36,15 +37,14 @@ class RabbitTubeServer:
 		responseJson = { 'error': False, 'message': None, 'downloadPath': None }
 
 		# Proccess the web request and extract the parameters
-		errorWhileParsingRequest, requestParameters = self.m_requestParser.GetRequestParams(request)
+		errorWhileParsingRequest, requestParameters = await self.m_requestParser.GetRequestParams(request)
 		if errorWhileParsingRequest:
-			return BuildErrorResponse(responseJson)
+			return BuildErrorResponse(responseJson, message = 'error while parsing request')
 
 		# Are the request Parameters ok? get the song to be downloaded
-		requestValidationError, songId = 
-			self.requestProccessor.TryExtractIdFromDownloadRequestParams(requestParameters)
+		requestValidationError, songId = self.m_requestProccessor.TryExtractIdFromDownloadRequestParams(requestParameters)
 		if requestValidationError:
-			return BuildErrorResponse(responseJson)
+			return BuildErrorResponse(responseJson, message = 'error while getting song id from request')
 
 		# Try to download and return the song to the client
 		gotFile = self.m_videoDownloader.DownloadSong(songId)
@@ -80,7 +80,7 @@ server = RabbitTubeServer(
 	localStorage,
 	YoutubeSongSearch(),
 	JsonRequestParser(),
-	YoutubeRequestProccessor(YoutubeRequestValidator())
+	YoutubeRequestProccessor(YoutubeRequestValidator()),
 	YOUTUBE_APIKEY
 )
 

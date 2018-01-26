@@ -1,17 +1,19 @@
 #YoutubeRequestValidator
 
 from AbstractRequestValidator import *
+import re
 
 class YoutubeRequestValidator(AbstractRequestValidator):
 	def __init__(self):
-		AbstractRequestProccessor.__init__(self)
+		AbstractRequestValidator.__init__(self)
 
-
+	@staticmethod
 	def IsValidYoutubeURL(url):
 		if not type(url) == type('string'): return False
 		pattern = '^https:\/\/www\.youtube\.com\/watch\?v=([0-9a-zA-Z-_]{11})(&index=[0-9]*)?(&list=[0-9a-zA-Z-]*)?(&index=[0-9]*)?$'
 		return re.match(pattern, url) != None
 
+	@staticmethod
 	def IsValidDownloadRequestJSON(jsonDict):
 		requiredParameters = [('url', type('str'))] #add any must-have parameters, tuple of param key and type needed
 		for param in requiredParameters:
@@ -20,10 +22,10 @@ class YoutubeRequestValidator(AbstractRequestValidator):
 		return True
 
 	def AreDownloadRequestParamsValid(self, params):
-		if IsValidDownloadRequestJSON(params) == False:
+		if self.IsValidDownloadRequestJSON(params) == False:
 			return False
 		url = params['url']
-		if IsValidYoutubeURL(url) == False:
+		if self.IsValidYoutubeURL(url) == False:
 			return False
 		else:
 			return True		
