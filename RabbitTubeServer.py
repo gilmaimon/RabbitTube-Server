@@ -2,6 +2,8 @@ from aiohttp import web
 from YoutubeSongDownloader import *
 from LocalStorage import *
 from YoutubeSongSearch import *
+from YoutubeRequestValidator import *
+from YoutubeRequestProccessor import *
 import re
 
 def IsValidYoutubeQuery(query):
@@ -21,65 +23,35 @@ def BuildErrorResponse(responseJson, message = 'Unknown input error'):
 	responseJson['message'] = message
 	return web.json_response(responseJson)
 
-def IsValidYoutubeURL(url):
-	if not type(url) == type('string'): return False
-	pattern = '^https:\/\/www\.youtube\.com\/watch\?v=([0-9a-zA-Z-_]{11})(&index=[0-9]*)?(&list=[0-9a-zA-Z-]*)?(&index=[0-9]*)?$'
-	return re.match(pattern, url) != None
-
-def IsValidRequestJSON(jsonDict):
-	requiredParameters = [('url', type('str'))] #add any must-have parameters, tuple of param key and type needed
-	for param in requiredParameters:
-		if param[0] not in jsonDict: return False
-		if type(jsonDict[param[0]]) != param[1]: return False
-	return True
-
-def YoutubeIdFromURL(url):
-	pattern = 'watch\?v=([0-9a-zA-Z-_]{11})'
-	results = re.findall(pattern, url)
-	if len(results) == 0: return False
-	return results[0]
-
 class RabbitTubeServer:
-	def __init__(self, videoDownloader, localStorage, songSearch, apiKey):
+	def __init__(self, videoDownloader, localStorage, songSearch, requestParser, requestProccessor, apiKey):
 		self.m_videoDownloader = videoDownloader
 		self.m_localStorage = localStorage
 		self.m_songSearch = songSearch
 		self.m_apiKey = apiKey
-
-	def GetErrorResponseForDownloadRequest(self, requestJson, responseJson):
-		#no json param supplied
-		if requestJson == None:
-			return BuildErrorResponse(responseJson, message = 'invalid or no json param on key: \'data\'')
-
-		#case of missing params or params of the wrong type
-		if not IsValidRequestJSON(requestJson):
-			return BuildErrorResponse(responseJson, message = 'Some must-have parameters are missing or of wrong type (\'url\' maybe?).')
-		return None
-
+		self.m_requestParser = requestParser
+		self.m_requestProccessor = requestProccessor
 
 	async def HandleDownloadRequest(self, request):
 		responseJson = { 'error': False, 'message': None, 'downloadPath': None }
 
-		try:
-			requestJson = await request.json()
-		except:
-			return BuildErrorResponse(responseJson, message = 'request json is badly formatted')
+		# Proccess the web request and extract the parameters
+		errorWhileParsingRequest, requestParameters = self.m_requestParser.GetRequestParams(request)
+		if errorWhileParsingRequest:
+			return BuildErrorResponse(responseJson)
 
-		errorResponse = self.GetErrorResponseForDownloadRequest(requestJson, responseJson)
-		#in case of error, return the error response indicating the problem for the client
-		if errorResponse != None:
-			return errorResponse
+		# Are the request Parameters ok? get the song to be downloaded
+		requestValidationError, songId = 
+			self.requestProccessor.TryExtractIdFromDownloadRequestParams(requestParameters)
+		if requestValidationError:
+			return BuildErrorResponse(responseJson)
 
-		url = requestJson['url']
-		#if the video url is incorrect
-		if not IsValidYoutubeURL(url):
-			return BuildErrorResponse(responseJson, message = 'the supplied url is invalid.')
-
-		videoID = YoutubeIdFromURL(url)
-		gotFile = self.m_videoDownloader.DownloadSong(videoID)
+		# Try to download and return the song to the client
+		gotFile = self.m_videoDownloader.DownloadSong(songId)
 		if not gotFile:
-			return BuildErrorResponse(responseJson, message = 'could not download the video.')
-		pathToFile = self.m_localStorage.GetFilePath(videoID)
+			return BuildErrorResponse(responseJson, message = 'could not download the song.')
+		pathToFile = self.m_localStorage.GetFilePath(songId)
+		
 		return web.FileResponse(pathToFile)
 
 	async def HandleSearchVideosRequest(self, request):
@@ -103,7 +75,14 @@ class RabbitTubeServer:
 
 YOUTUBE_APIKEY = 'AIzaSyABJxY_QcTVLfjgwBffxP6w_AOWPc7LMyE'
 localStorage = LocalStorage()
-server = RabbitTubeServer(YoutubeSongDownloader(localStorage), localStorage, YoutubeSongSearch(), YOUTUBE_APIKEY)
+server = RabbitTubeServer(
+	YoutubeSongDownloader(localStorage),
+	localStorage,
+	YoutubeSongSearch(),
+	JsonRequestParser(),
+	YoutubeRequestProccessor(YoutubeRequestValidator())
+	YOUTUBE_APIKEY
+)
 
 app = web.Application()
 app.router.add_post('/download/song', server.HandleDownloadRequest)
