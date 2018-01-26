@@ -16,7 +16,7 @@ class AbstractRequestProccessor(ABC):
 			return True, None
 		return self.ExtractIdFromDownloadRequestParams(params)
 
-	def TryExtractQueryFromSearchRequestParams(self):
+	def TryExtractQueryFromSearchRequestParams(self, params):
 		if self.m_validator.AreSearchRequestParamsValid(params) == False:
 			return True, None
 		return self.ExtractQueryFromSearchRequestParams(params)
