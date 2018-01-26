@@ -4,10 +4,11 @@ from YoutubeCommon import *
 
 DEFAULT_NUM_RETURN_ITEMS = 35
 
-class YoutubeSongSearch(AbstractSongSearch):
+class YoutubeSongSearch(AbstractSongSearch, apikey):
 	def __init__(self):
 		AbstractSongSearch.__init__(self)
+		self.m_apiKey = apikey
 
-	def SearchSongs(self, query, apikey):
-		searchRequest = YoutubeSearchRequest(apikey, query, DEFAULT_NUM_RETURN_ITEMS,TYPE_VIDEO)
+	def SearchSongs(self, query):
+		searchRequest = YoutubeSearchRequest(self.m_apiKey, query, DEFAULT_NUM_RETURN_ITEMS,TYPE_VIDEO)
 		return searchRequest.ExecuteRequest()

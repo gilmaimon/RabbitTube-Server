@@ -12,3 +12,8 @@ class AbstractRequestValidator(ABC):
 	@abstractmethod
 	def AreDownloadRequestParamsValid(self, params):
 		pass
+
+	@abstractmethod
+	def AreSearchRequestParamsValid(self, params):
+		pass
+		

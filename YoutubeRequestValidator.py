@@ -28,4 +28,29 @@ class YoutubeRequestValidator(AbstractRequestValidator):
 		if self.IsValidYoutubeURL(url) == False:
 			return False
 		else:
-			return True		
+			return True	
+	
+	@staticmethod
+	def IsValidYoutubeQuery(query):
+		if not type(query) == type('string'): return False
+		return len(query) <= 75 and len(query) > 0
+
+	@staticmethod
+	def IsValidSearchQueryParams(jsonDict):
+		requiredParameters = [('query', type('str'))] #add any must-have parameters, tuple of param key and type needed
+		for param in requiredParameters:
+			if param[0] not in jsonDict: return False
+			if type(jsonDict[param[0]]) != param[1]: return False
+
+		return True
+
+	def AreSearchRequestParamsValid(self, params):
+		if self.IsValidSearchQueryParams(params) == False:
+			return False
+
+		query = params['query']
+		if self.IsValidYoutubeQuery(query) == False:
+			return False
+		else:
+			return True	
+				
