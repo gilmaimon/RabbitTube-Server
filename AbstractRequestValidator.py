@@ -1,9 +1,11 @@
-#AbstractRequestValidator
+# ----------- AbstractRequestValidator -----------
 
 from abc import ABC
 from abc import abstractmethod
 
-# class for reciving a request object and return a dictinary with the request parameters
+# This class is responsible for validating paremeters 
+# parsed from a request object. Do they contain all 
+# the needed information and meet the requirements
 class AbstractRequestValidator(ABC):
 
 	def __init__(self):

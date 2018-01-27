@@ -4,14 +4,15 @@ class ItemType(Enum):
 	SONG = 1
 	PLAYLIST = 2
 
+# This class is a unified represenation for playlist and song item
 class Item:
 	def __init__(self, id, title, subtitle, description, hq_thumbnail, itemType):
-		self.m_id = id
-		self.m_title = title
-		self.m_subtitle = subtitle
-		self.m_description = description
-		self.m_hq_thumbnail = hq_thumbnail
-		self.m_type = itemType
+		self.__id = id
+		self.__title = title
+		self.__subtitle = subtitle
+		self.__description = description
+		self.__hq_thumbnail = hq_thumbnail
+		self.__type = itemType
 
 	@classmethod
 	def fromDict(self, dataAsDict, itemType):
@@ -19,29 +20,29 @@ class Item:
 		title = dataAsDict['title']
 		description = dataAsDict['description']
 		hq_thumbnail = dataAsDict['thumbnails']['default']
-		id = 'temp'
+		itemIdKey = None
 		if itemType == ItemType.SONG:
-			id = dataAsDict['videoID']
+			itemIdKey = dataAsDict['videoID']
 		else:
-			id = dataAsDict['playlistID']
-		newInstance = self(id, title, subtitle, description, hq_thumbnail, itemType)
+			itemIdKey = dataAsDict['playlistID']
+		newInstance = self(itemIdKey, title, subtitle, description, hq_thumbnail, itemType)
 		return newInstance
 
 	def GetId(self):
-		return self.m_id
+		return self.__id
 
 	def GetTitle(self):
-		return self.m_title
+		return self.__title
 
 	def AsDict(self):
 		result = {}
 
-		result['videoID'] = self.m_id
-		result['channelTitle'] = self.m_subtitle
-		result['title'] = self.m_title
-		result['description'] = self.m_description
+		result['videoID'] = self.__id
+		result['channelTitle'] = self.__subtitle
+		result['title'] = self.__title
+		result['description'] = self.__description
 
 		result['thumbnails'] = {}
-		result['thumbnails']['default'] = self.m_hq_thumbnail
-		result['thumbnails']['high'] = self.m_hq_thumbnail
+		result['thumbnails']['default'] = self.__hq_thumbnail
+		result['thumbnails']['high'] = self.__hq_thumbnail
 		return result

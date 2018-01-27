@@ -1,5 +1,8 @@
+# ------------- JsonRequestParser -------------
+
 from AbstractRequestParser import *
 
+# Implemenation for getting parameters out of a request object
 class JsonRequestParser(AbstractRequestParser):
 	def __init__(self):
 		super().__init__()

@@ -1,7 +1,9 @@
-#YoutubeRequestProccessor
+# ------------ YoutubeRequestProccessor ------------
+
 from AbstractRequestProccessor import *
 import re 
 
+# Class for processing and validating parsed parameters
 class YoutubeRequestProccessor(AbstractRequestProccessor):
 	def __init__(self, validator):
 		AbstractRequestProccessor.__init__(self, validator)
@@ -13,10 +15,10 @@ class YoutubeRequestProccessor(AbstractRequestProccessor):
 		if len(results) == 0: return False
 		return results[0]
 
-	def ExtractIdFromDownloadRequestParams(self, params):
+	def __ExtractIdFromDownloadRequestParams(self, params):
 		url = params['url']
 		return False, self.YoutubeIdFromURL(url)
 
-	def ExtractQueryFromSearchRequestParams(self, params):
+	def __ExtractQueryFromSearchRequestParams(self, params):
 		query = params['query']
 		return False, query

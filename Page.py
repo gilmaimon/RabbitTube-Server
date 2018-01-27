@@ -1,10 +1,12 @@
+# This class represents a page of items
+# each item is either a song or playlist 
 class Page:
 	def __init__(self, totalAvailableResults, numResults, nextPageToken, prevPageToken):
-		self.m_totalAvailableResults = totalAvailableResults
-		self.m_numResults = numResults
-		self.m_nextPageToken = nextPageToken
-		self.m_prevPageToken = prevPageToken
-		self.m_items = []
+		self.__totalAvailableResults = totalAvailableResults
+		self.__numResults = numResults
+		self.__nextPageToken = nextPageToken
+		self.__prevPageToken = prevPageToken
+		self.__items = []
 
 	@classmethod
 	def fromDict(self, dataAsDict):
@@ -16,22 +18,22 @@ class Page:
 		return newInstance
 
 	def AddItem(self, item):
-		self.m_items += [item]
+		self.__items += [item]
 
 	def GetItems(self):
-		return self.m_items
+		return self.__items
 
 	def SetItems(self, items):
-		self.m_items = items
+		self.__items = items
 
 	def AsDict(self):
 		result = {}
-		result['totalResults'] = self.m_totalAvailableResults
-		result['resultsShowing'] = self.m_numResults
-		result['nextPageToken'] = self.m_nextPageToken
-		result['prevPageToken'] = self.m_prevPageToken
+		result['totalResults'] = self.__totalAvailableResults
+		result['resultsShowing'] = self.__numResults
+		result['nextPageToken'] = self.__nextPageToken
+		result['prevPageToken'] = self.__prevPageToken
 		result['items'] = []
-		for item in self.m_items:
+		for item in self.__items:
 			result['items'] += [item.AsDict()]
 		return result
 
