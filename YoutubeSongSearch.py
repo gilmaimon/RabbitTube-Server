@@ -7,8 +7,8 @@ from YoutubeCommon import *
 DEFAULT_NUM_RETURN_ITEMS = 35
 
 # Class for searching youtube songs
-class YoutubeSongSearch(AbstractSongSearch, apikey):
-	def __init__(self):
+class YoutubeSongSearch(AbstractSongSearch):
+	def __init__(self, apikey):
 		AbstractSongSearch.__init__(self)
 		self.__apiKey = apikey
 
