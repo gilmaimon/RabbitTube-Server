@@ -54,9 +54,9 @@ class YoutubeSearchResponse:
 		return resultItems
 
 	# Every item in the items returning from the youtube search api has alot of uneccessery data
-    # This routine only takes the needed fields and returns a single parsed item
-    # This routine will throw in case the item presented is not a youtube video or playlist item
-    @staticmethod
+	# This routine only takes the needed fields and returns a single parsed item
+	# This routine will throw in case the item presented is not a youtube video or playlist item
+	@staticmethod
 	def ParseResponseItem(responseItem, itemType):
 		item = {}
 		if itemType == ItemType.SONG:

@@ -10,8 +10,8 @@ class YoutubeSongDownloader(AbstractSongDownloader):
 	def __init__(self, localStorage):
 		super().__init__(localStorage)
 
-	@staticmethod
-	def __GetYoutubeDlOptions():
+
+	def __GetYoutubeDlOptions(self):
 		ydlOptions = ['--no-playlist', '--no-check-certificate', '-x', '--audio-format', 'mp3', '-o', self.GetLocalStorage().GetCacheDirectory() + '/%(id)s.%(ext)s', '--']
 		return ydlOptions
 

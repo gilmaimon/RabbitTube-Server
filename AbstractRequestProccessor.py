@@ -19,21 +19,21 @@ class AbstractRequestProccessor(ABC):
 	def TryExtractIdFromDownloadRequestParams(self, params):
 		if self.__validator.AreDownloadRequestParamsValid(params) == False:
 			return True, None
-		return self.ExtractIdFromDownloadRequestParams(params)
+		return self._ExtractIdFromDownloadRequestParams(params)
 	
 	# This routine will first validate the parsed parameters using a validator
 	# Next the routine will try to extract the request data out of the params, in
 	# this case, Query String.
 	# Return type: tuple(ErrorOcured(Boolean), String(Extracted Query))
-	def TryExtractQueryFromSearchRequestParams(self):
+	def TryExtractQueryFromSearchRequestParams(self, params):
 		if self.__validator.AreSearchRequestParamsValid(params) == False:
 			return True, None
-		return self.ExtractQueryFromSearchRequestParams(params)
+		return self._ExtractQueryFromSearchRequestParams(params)
 
 	@abstractmethod
-	def __ExtractIdFromDownloadRequestParams(self, params):
+	def _ExtractIdFromDownloadRequestParams(self, params):
 		pass
 
 	@abstractmethod
-	def __ExtractQueryFromSearchRequestParams(self, params):
+	def _ExtractQueryFromSearchRequestParams(self, params):
 		pass

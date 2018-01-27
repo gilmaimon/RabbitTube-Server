@@ -11,7 +11,7 @@ MIN_SEARCH_LIMIT = 10
 # The search is universal for both playlists, videos or both
 class YoutubeSearchRequest:
         def __init__(self, youtubeApiKey, searchQuery, numOfResults, requestedItemsType, pageToken = None):
-                assert(MIN_SEARCH_LIMIT >= numOfResults and numOfResults <= MAX_SEARCH_LIMIT)
+                assert(MIN_SEARCH_LIMIT <= numOfResults and numOfResults <= MAX_SEARCH_LIMIT)
                 self.__queryParameters = self.ConstructQueryParameters(
                         youtubeApiKey,
                         searchQuery,

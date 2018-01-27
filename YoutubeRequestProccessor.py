@@ -15,10 +15,10 @@ class YoutubeRequestProccessor(AbstractRequestProccessor):
 		if len(results) == 0: return False
 		return results[0]
 
-	def __ExtractIdFromDownloadRequestParams(self, params):
+	def _ExtractIdFromDownloadRequestParams(self, params):
 		url = params['url']
 		return False, self.YoutubeIdFromURL(url)
 
-	def __ExtractQueryFromSearchRequestParams(self, params):
+	def _ExtractQueryFromSearchRequestParams(self, params):
 		query = params['query']
 		return False, query

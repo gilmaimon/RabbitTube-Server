@@ -5,17 +5,17 @@ from abc import abstractmethod
 
 class AbstractLocalStorage(ABC):
 
-	def __init__(self):
-		super().__init__()
+    def __init__(self):
+        super().__init__()
 
-	@abstractmethod
+    @abstractmethod
     def GetCacheDirectory(self):
             pass
 
-	@abstractmethod
+    @abstractmethod
     def IsSongInLocalStorage(self, id):
             pass
 
-	@abstractmethod
+    @abstractmethod
     def GetFilePath(self, id):
             pass
