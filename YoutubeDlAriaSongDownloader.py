@@ -4,21 +4,20 @@ from AbstractSongDownloader import *
 from subprocess import call
 import threading
 
+
+class DownloadTask():
+	def __init__(self, command_line_arguments):
+		self.__args = command_line_arguments
+	
+	def run(self):
+		call(self.__args)
+
 # This class is responsible for downloading song from
 # youtube. current implementaion is using youtube-dl
 class YoutubeDlAriaSongDownloader(AbstractSongDownloader):
-
-	class SubproccessCallTask(threading.Thread):
-		def __init__(self, command_line_arguments):
-			threading.Thread.__init__(self)
-			self.__args = command_line_arguments
-		
-		def run(self):
-			call(self.__args)
-
+	
 	def __init__(self, localStorage):
 		super().__init__(localStorage)
-
 
 	def __GetYoutubeDlOptions(self):
 		ydlOptions = [
@@ -39,7 +38,8 @@ class YoutubeDlAriaSongDownloader(AbstractSongDownloader):
 		if self.GetLocalStorage().IsSongInLocalStorage(songId):
 			return True
 
-		downloadTask = SubproccessCallTask(['youtube-dl'] + self.__GetYoutubeDlOptions() + [songId])
+		#download the song
+		downloadTask = DownloadTask(['youtube-dl'] + self.__GetYoutubeDlOptions() + [songId])
 		downloadTask.run();
-		downloadTask.join();
+
 		return self.GetLocalStorage().IsSongInLocalStorage(songId)
