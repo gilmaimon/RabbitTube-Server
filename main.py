@@ -1,11 +1,14 @@
 from aiohttp import web
 
-from YoutubeSongDownloader import *
+from YoutubeDlSongDownloader import *
 from TmpLocalStorage import *
 from YoutubeSongSearch import *
 from YoutubeRequestValidator import *
 from YoutubeRequestProccessor import *
 from JsonRequestParser import *
+
+
+from YoutubeDlAriaSongDownloader import YoutubeDlAriaSongDownloader
 
 from RabbitTubeServer import RabbitTubeServer
 
@@ -13,7 +16,7 @@ YOUTUBE_APIKEY = 'AIzaSyABJxY_QcTVLfjgwBffxP6w_AOWPc7LMyE'
 def main():
 	localStorage = TmpLocalStorage()
 	server = RabbitTubeServer (
-		YoutubeSongDownloader(localStorage),
+		YoutubeDlAriaSongDownloader(localStorage),
 		localStorage,
 		YoutubeSongSearch(YOUTUBE_APIKEY),
 		JsonRequestParser(),
