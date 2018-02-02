@@ -1,21 +1,23 @@
 # ------------ YoutubeDlAriaSongDownloader ------------
 
 from AbstractSongDownloader import *
-from subprocess import call
+from subprocess import call, Popen
 import threading
 
 
 class DownloadTask():
 	def __init__(self, command_line_arguments):
 		self.__args = command_line_arguments
-	
+
 	def run(self):
-		call(self.__args)
+		child = Popen(self.__args)
+		child.wait()
+		#call(self.__args)
 
 # This class is responsible for downloading song from
 # youtube. current implementaion is using youtube-dl
 class YoutubeDlAriaSongDownloader(AbstractSongDownloader):
-	
+
 	def __init__(self, localStorage):
 		super().__init__(localStorage)
 

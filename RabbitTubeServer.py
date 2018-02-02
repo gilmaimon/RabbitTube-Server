@@ -45,10 +45,10 @@ class RabbitTubeServer:
 		if not gotFile:
 			return self.__BuildErrorResponse(message = 'could not download the song.')
 		pathToFile = self.__localStorage.GetFilePath(songId)
-		
+
 		return web.FileResponse(pathToFile)
 
-	async def HandleSearchVideosRequest(self, request):		
+	async def HandleSearchVideosRequest(self, request):
 		# Proccess the web request and extract the parameters
 		errorWhileParsingRequest, requestParameters = await self.__requestParser.GetRequestParams(request)
 		if errorWhileParsingRequest:
