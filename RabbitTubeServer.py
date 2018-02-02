@@ -1,10 +1,15 @@
 from aiohttp import web
+import asyncio
 
 from AbstractSongDownloader import AbstractSongDownloader
 from AbstractLocalStorage import AbstractLocalStorage
 from AbstractSongSearch import AbstractSongSearch
 from AbstractRequestParser import AbstractRequestParser
 from AbstractRequestProccessor import AbstractRequestProccessor
+
+from concurrent.futures import ThreadPoolExecutor
+
+NUM_THREADS_IN_POOL = 10
 
 class RabbitTubeServer:
 	def __init__(self, songDownloader, localStorage, songSearch, requestParser, requestProccessor):
@@ -14,6 +19,8 @@ class RabbitTubeServer:
 		isinstance(requestParser, AbstractRequestParser)
 		isinstance(requestProccessor, AbstractRequestProccessor)
 
+		self.__loop =  asyncio.get_event_loop()
+		self.__executor = ThreadPoolExecutor(NUM_THREADS_IN_POOL)
 		self.__songDownloader = songDownloader
 		self.__localStorage = localStorage
 		self.__songSearch = songSearch
@@ -41,7 +48,7 @@ class RabbitTubeServer:
 			return self.__BuildErrorResponse(message = 'error while getting song id from request')
 
 		# Try to download and return the song to the client
-		gotFile = self.__songDownloader.DownloadSong(songId)
+		gotFile = await self.__loop.run_in_executor(self.__executor, self.__songDownloader.DownloadSong, songId)
 		if not gotFile:
 			return self.__BuildErrorResponse(message = 'could not download the song.')
 		pathToFile = self.__localStorage.GetFilePath(songId)
