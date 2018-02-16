@@ -7,7 +7,7 @@ from AbstractSongSearch import AbstractSongSearch
 from AbstractRequestParser import AbstractRequestParser
 from AbstractRequestProccessor import AbstractRequestProccessor
 
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ThreadPoolExecutor
 
 NUM_THREADS_IN_POOL = 10
 
@@ -20,7 +20,7 @@ class RabbitTubeServer:
 		isinstance(requestProccessor, AbstractRequestProccessor)
 
 		self.__loop =  asyncio.get_event_loop()
-		self.__executor = ProcessPoolExecutor(NUM_THREADS_IN_POOL)
+		self.__executor = ThreadPoolExecutor(NUM_THREADS_IN_POOL)
 		self.__songDownloader = songDownloader
 		self.__localStorage = localStorage
 		self.__songSearch = songSearch
