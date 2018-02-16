@@ -28,16 +28,16 @@ class RabbitTubeServer:
 		self.__requestProccessor = requestProccessor
 
 		self.__app = web.Application()
-		__InitRoutes(self)
-		
+		self.__InitRoutes()
+
 
 	def __InitRoutes(self):
-		self.__app.router.add_post('/download/song', server.HandleDownloadRequest)
-		self.__app.router.add_post('/search/videos', server.HandleSearchVideosRequest)
-		self.__app.router.add_post('/search/songs', server.HandleSearchVideosRequest)
+		self.__app.router.add_post('/download/song', self.HandleDownloadRequest)
+		self.__app.router.add_post('/search/videos', self.HandleSearchVideosRequest)
+		self.__app.router.add_post('/search/songs', self.HandleSearchVideosRequest)
 
-	def Start(self, port):
-		web.run_app(self.__app, port = port)
+	def Start(self, portNumber):
+		web.run_app(self.__app, port = portNumber)
 
 	@staticmethod
 	def __BuildErrorResponse(message = 'Unknown input error'):

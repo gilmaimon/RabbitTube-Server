@@ -1,9 +1,9 @@
-from TmpLocalStorage 				import TmpLocalStorage
-from YoutubeSongSearch 				import YoutubeSongSearch
-from YoutubeRequestValidator 		import YoutubeRequestValidator
-from YoutubeRequestProccessor		import YoutubeRequestProccessor
-from JsonRequestParser 				import JsonRequestParser
-from YoutubeDlAriaSongDownloader 	import YoutubeDlAriaSongDownloader
+from TmpLocalStorage import TmpLocalStorage
+from YoutubeSongSearch import YoutubeSongSearch
+from YoutubeRequestValidator import YoutubeRequestValidator
+from YoutubeRequestProccessor import YoutubeRequestProccessor
+from JsonRequestParser import JsonRequestParser
+from YoutubeDlAriaSongDownloader import YoutubeDlAriaSongDownloader
 
 from RabbitTubeServer import RabbitTubeServer
 
@@ -18,7 +18,7 @@ def main():
 		YoutubeRequestProccessor(YoutubeRequestValidator())
 	)
 
-	server.Start(8080)	
+	server.Start(8080)
 
 if __name__ == '__main__':
 	main()
