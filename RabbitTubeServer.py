@@ -7,7 +7,7 @@ from AbstractSongSearch import AbstractSongSearch
 from AbstractRequestParser import AbstractRequestParser
 from AbstractRequestProccessor import AbstractRequestProccessor
 
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ProcessPoolExecutor
 
 NUM_THREADS_IN_POOL = 10
 
@@ -20,12 +20,24 @@ class RabbitTubeServer:
 		isinstance(requestProccessor, AbstractRequestProccessor)
 
 		self.__loop =  asyncio.get_event_loop()
-		self.__executor = ThreadPoolExecutor(NUM_THREADS_IN_POOL)
+		self.__executor = ProcessPoolExecutor(NUM_THREADS_IN_POOL)
 		self.__songDownloader = songDownloader
 		self.__localStorage = localStorage
 		self.__songSearch = songSearch
 		self.__requestParser = requestParser
 		self.__requestProccessor = requestProccessor
+
+		self.__app = web.Application()
+		__InitRoutes(self)
+		
+
+	def __InitRoutes(self):
+		self.__app.router.add_post('/download/song', server.HandleDownloadRequest)
+		self.__app.router.add_post('/search/videos', server.HandleSearchVideosRequest)
+		self.__app.router.add_post('/search/songs', server.HandleSearchVideosRequest)
+
+	def Start(self, port):
+		web.run_app(self.__app, port = port)
 
 	@staticmethod
 	def __BuildErrorResponse(message = 'Unknown input error'):

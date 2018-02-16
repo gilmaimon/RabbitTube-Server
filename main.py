@@ -1,14 +1,11 @@
 from aiohttp import web
 
-from YoutubeDlSongDownloader import *
-from TmpLocalStorage import *
-from YoutubeSongSearch import *
-from YoutubeRequestValidator import *
-from YoutubeRequestProccessor import *
-from JsonRequestParser import *
-
-
-from YoutubeDlAriaSongDownloader import YoutubeDlAriaSongDownloader
+from TmpLocalStorage 				import TmpLocalStorage
+from YoutubeSongSearch 				import YoutubeSongSearch
+from YoutubeRequestValidator 		import YoutubeRequestValidator
+from YoutubeRequestProccessor		import YoutubeRequestProccessor
+from JsonRequestParser 				import JsonRequestParser
+from YoutubeDlAriaSongDownloader 	import YoutubeDlAriaSongDownloader
 
 from RabbitTubeServer import RabbitTubeServer
 
@@ -23,11 +20,7 @@ def main():
 		YoutubeRequestProccessor(YoutubeRequestValidator())
 	)
 
-	app = web.Application()
-	app.router.add_post('/download/song', server.HandleDownloadRequest)
-	app.router.add_post('/search/videos', server.HandleSearchVideosRequest)
-	app.router.add_post('/search/songs', server.HandleSearchVideosRequest)
-	web.run_app(app, port = 8080)
+	server.Start(8080)	
 
 if __name__ == '__main__':
 	main()
