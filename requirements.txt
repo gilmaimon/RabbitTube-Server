@@ -1,0 +1,12 @@
+packages:
+   - youtube-dl
+   - aria2c
+   - python3.5
+   - aiohttp
+   - asyncio
+   - tmpreaper
+
+server stuff to do:
+   - chronjob: * * * * * sudo tmpreaper 5m /tmp
+   - to run the server: nohup python3.5 server.py > /dev/null 2>&1 &
+   - make sure to run the server on startup
