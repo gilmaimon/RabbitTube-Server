@@ -1,12 +1,23 @@
-packages:
-   - youtube-dl
-   - aria2c
-   - python3.5
-   - aiohttp
-   - asyncio
-   - tmpreaper
+crontab -r
 
-server stuff to do:
-   - chronjob: * * * * * sudo tmpreaper 5m /tmp
-   - to run the server: nohup python3.5 server.py > /dev/null 2>&1 &
-   - make sure to run the server on startup
+apt-get install python3.5
+apt-get install python3-pip
+pip3 install --upgrade pip
+pip3 install aiohttp
+
+apt-get install aria2
+
+apt-get install ffmpeg
+wget https://yt-dl.org/latest/youtube-dl -O /usr/local/bin/youtube-dl
+chmod a+x /usr/local/bin/youtube-dl
+hash -r
+
+apt-get install tmpreaper
+
+(crontab -l 2>/dev/null; echo "* * * * * sudo tmpreaper 5m /tmp") | crontab
+(crontab -l 2>/dev/null; echo "@reboot sudo nohup python3.5 /home/RabbitTube-Server/main.py > /dev/null 2>&1 &") | crontab
+
+read  -n 1 -p "We are Done! Just make sure aiohttp is installed & reboot"
+
+#pip3 install aiohttp
+#shutdown -r now
