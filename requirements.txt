@@ -1,5 +1,6 @@
 crontab -r
 
+apt-get install python
 apt-get install python3.5
 apt-get install python3-pip
 pip3 install --upgrade pip
