@@ -1,5 +1,6 @@
 crontab -r
 
+apt-get install python
 apt-get install python3.5
 apt-get install python3-pip
 pip3 install --upgrade pip
@@ -17,7 +18,7 @@ apt-get install tmpreaper
 (crontab -l 2>/dev/null; echo "* * * * * sudo tmpreaper 5m /tmp") | crontab
 (crontab -l 2>/dev/null; echo "@reboot sudo nohup python3.5 /home/RabbitTube-Server/main.py > /dev/null 2>&1 &") | crontab
 
-read  -n 1 -p "We are Done! Just make sure aiohttp is installed & reboot"
+read 1 -p "We are Done! Just make sure aiohttp is installed & reboot"
 
 #pip3 install aiohttp
 #shutdown -r now
