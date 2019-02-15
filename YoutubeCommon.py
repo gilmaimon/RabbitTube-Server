@@ -1,8 +1,10 @@
 import aiohttp
 import json
+import socket
 
 async def ExecuteRawJsonGetRequest(url, params):
-        async with aiohttp.ClientSession() as session:
+        conn = aiohttp.TCPConnector(family=socket.AF_INET)
+        async with aiohttp.ClientSession(connector=conn) as session:
                         async with session.get(url, params = params) as resp:
                                 responseText = await resp.text()
                                 return json.loads(responseText)
