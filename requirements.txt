@@ -20,5 +20,5 @@ apt-get install tmpreaper
 
 read 1 -p "We are Done! Just make sure aiohttp is installed & reboot"
 
-#pip3 install aiohttp
+#pip3 install aiohttp==2.3.10
 #shutdown -r now
